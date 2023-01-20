@@ -1,8 +1,8 @@
-from .pojos import Token
+import src.chain.pojos
 
 
 class Pool:
-    def __init__(self, tokenA: Token, tokenB: Token):
+    def __init__(self, tokenA: src.chain.pojos.Token, tokenB: src.chain.pojos.Token):
         self.tokenA = tokenA
         self.tokenB = tokenB
         self.reserveA = 0

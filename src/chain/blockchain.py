@@ -1,8 +1,7 @@
-from enum import Enum
-from typing import List
+from typing import List, Dict
 
 from .Pool import Pool
-from .pojos import Transaction, Block, Token, Wallet
+from .pojos import Block, Token, Wallet, Transaction
 
 
 class BlockChain:
@@ -12,17 +11,17 @@ class BlockChain:
         self.blocks: List[Block] = []
         self.pools: dict = {}
         self.tokens = {}
-        self.wallets = {}
+        self.wallets: Dict[str, Wallet] = {}
         self.oracles = {}
 
-    def addToken(self,token:Token):
-        self.tokens[token.symbol]= token
+    def addToken(self, token: Token):
+        self.tokens[token.symbol] = token
 
-    def addPool(self,pool:Pool):
-        self.pools[pool.getSymbol()]=pool
+    def addPool(self, pool: Pool):
+        self.pools[pool.getSymbol()] = pool
 
-    def addWallet(self,wallet:Wallet):
-        self.wallets[wallet.address]=wallet
+    def addWallet(self, wallet: Wallet):
+        self.wallets[wallet.address] = wallet
 
     def blockFromMempool(self):
         impossibleTxs = []
@@ -38,7 +37,8 @@ class BlockChain:
         return Block(self.blocks[-1], txsForBlock)
 
     def addBlock(self, block: Block):
-        if block.prev != self.blocks[-1]:
+        if (len(self.blocks) == 0 and block.prev is not None) or \
+                (len(self.blocks) > 0 and block.prev != self.blocks[-1]):
             print("Error: invalid block prev")
             return
 
