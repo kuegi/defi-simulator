@@ -4,18 +4,29 @@ from enum import Enum
 
 
 class TxType(Enum):
-    PoolSwap = "swap"
+    PoolSwap = "poolSwap"
+    CompositeSwap = "compositeSwap"
     AccountToAccount = "accountToAccount"
+    AddLiquidity = "addLiquitity"
+    RemoveLiquidity = "removeLiquidity"
+    SetOracle= "setOracle"
 
 class Transaction:
     def __init__(self, owner: str, type: TxType):
         self.owner = owner
         self.type = type
+        self.confirmedValid= False
 
     def applyToChain(self, chain):
         raise NotImplementedError
 
     def isValid(self, chain):
+        if self.confirmedValid:
+            return True
+        self.confirmedValid= self.checkValid(chain)
+        return self.confirmedValid
+
+    def checkValid(self,chain):
         raise NotImplementedError
 
 class Token:

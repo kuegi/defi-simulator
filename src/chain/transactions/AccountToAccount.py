@@ -10,7 +10,7 @@ class AccountToAccount(Transaction):
         self.to = to
         self.balances = balances
 
-    def isValid(self, chain: BlockChain):
+    def checkValid(self, chain: BlockChain):
         if self.owner not in chain.wallets:
             return False
 
